@@ -6,7 +6,7 @@ uses its own S3 artifact bucket and IAM roles.
 
 The pipeline resources (per-environment artifact buckets, pipeline execution
 roles and CloudFormation execution roles) are created and managed only by the
-separate [`dynamodb-sam-bootstrap`](../dynamodb-sam-bootstrap) IaC repository,
+separate [`dynamodb-sam-bootstrap`](https://github.com/muhumuza-ivan/dynamodb-sam-bootstrap) IaC repository,
 as the stacks `dynamodb-sam-pipeline-dev` and `dynamodb-sam-pipeline-prod`.
 This repo only consumes them.
 
