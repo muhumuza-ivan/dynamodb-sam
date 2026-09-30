@@ -1,0 +1,40 @@
+{
+  "dynamodb-sam-dev-orders": [
+    {
+      "PutRequest": {
+        "Item": {
+          "OrderId": { "S": "ORD-1001" },
+          "CustomerId": { "S": "CUST-001" },
+          "OrderStatus": { "S": "PENDING" },
+          "OrderDate": { "S": "2026-09-20T10:15:00Z" },
+          "TotalAmount": { "N": "149.99" },
+          "Items": { "L": [ { "M": { "Sku": { "S": "SKU-KBD" }, "Qty": { "N": "1" } } } ] }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "OrderId": { "S": "ORD-1002" },
+          "CustomerId": { "S": "CUST-001" },
+          "OrderStatus": { "S": "SHIPPED" },
+          "OrderDate": { "S": "2026-09-22T08:30:00Z" },
+          "TotalAmount": { "N": "35.50" },
+          "Items": { "L": [ { "M": { "Sku": { "S": "SKU-MSE" }, "Qty": { "N": "2" } } } ] }
+        }
+      }
+    },
+    {
+      "PutRequest": {
+        "Item": {
+          "OrderId": { "S": "ORD-1003" },
+          "CustomerId": { "S": "CUST-002" },
+          "OrderStatus": { "S": "PENDING" },
+          "OrderDate": { "S": "2026-09-24T14:05:00Z" },
+          "TotalAmount": { "N": "899.00" },
+          "Items": { "L": [ { "M": { "Sku": { "S": "SKU-MON" }, "Qty": { "N": "1" } } } ] }
+        }
+      }
+    }
+  ]
+}

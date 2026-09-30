@@ -1,0 +1,84 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >-
+  dynamodb-sam - Orders DynamoDB table (on-demand, Standard-IA storage class)
+  with two Global Secondary Indexes, deployed per environment via SAM pipelines.
+
+Parameters:
+  AppName:
+    Type: String
+    Default: dynamodb-sam
+    Description: Prefix for resource names. The bootstrap IAM roles are scoped to this prefix.
+  Environment:
+    Type: String
+    AllowedValues: [dev, prod]
+    Description: Deployment environment.
+
+Conditions:
+  IsProd: !Equals [!Ref Environment, prod]
+
+Resources:
+  # Item shape (DynamoDB is schemaless; only key attributes are declared below):
+  #   OrderId      (S)  - partition key
+  #   CustomerId   (S)  - GSI CustomerOrdersIndex partition key
+  #   OrderStatus  (S)  - GSI OrderStatusIndex partition key (PENDING | SHIPPED | DELIVERED | CANCELLED)
+  #   OrderDate    (S)  - ISO-8601 timestamp, sort key on both GSIs
+  #   TotalAmount  (N)  - non-key attribute
+  #   Items        (L)  - non-key attribute
+  OrdersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${AppName}-${Environment}-orders
+      BillingMode: PAY_PER_REQUEST
+      TableClass: STANDARD_INFREQUENT_ACCESS
+      AttributeDefinitions:
+        - AttributeName: OrderId
+          AttributeType: S
+        - AttributeName: CustomerId
+          AttributeType: S
+        - AttributeName: OrderStatus
+          AttributeType: S
+        - AttributeName: OrderDate
+          AttributeType: S
+      KeySchema:
+        - AttributeName: OrderId
+          KeyType: HASH
+      GlobalSecondaryIndexes:
+        # "All orders for a customer, newest first"
+        - IndexName: CustomerOrdersIndex
+          KeySchema:
+            - AttributeName: CustomerId
+              KeyType: HASH
+            - AttributeName: OrderDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        # "All orders in a given status, by date"
+        - IndexName: OrderStatusIndex
+          KeySchema:
+            - AttributeName: OrderStatus
+              KeyType: HASH
+            - AttributeName: OrderDate
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      PointInTimeRecoverySpecification:
+        PointInTimeRecoveryEnabled: !If [IsProd, true, false]
+      DeletionProtectionEnabled: !If [IsProd, true, false]
+      Tags:
+        - Key: Application
+          Value: !Ref AppName
+        - Key: Environment
+          Value: !Ref Environment
+
+Outputs:
+  OrdersTableName:
+    Description: DynamoDB table name
+    Value: !Ref OrdersTable
+  OrdersTableArn:
+    Description: DynamoDB table ARN
+    Value: !GetAtt OrdersTable.Arn
+  CustomerOrdersIndexName:
+    Value: CustomerOrdersIndex
+  OrderStatusIndexName:
+    Value: OrderStatusIndex

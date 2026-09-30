@@ -1,0 +1,23 @@
+version = 0.1
+
+[default.pipeline_bootstrap.parameters]
+oidc_provider_url = "https://token.actions.githubusercontent.com"
+oidc_client_id = "sts.amazonaws.com"
+github_org = "muhumuza-ivan"
+github_repo = "dynamodb-sam"
+oidc_provider = "github-actions"
+permissions_provider = "OpenID Connect (OIDC)"
+
+[dev.pipeline_bootstrap.parameters]
+pipeline_execution_role = "arn:aws:iam::765812221756:role/aws-sam-cli-managed-dev-pipel-PipelineExecutionRole-3Iee5dBYq6QC"
+cloudformation_execution_role = "arn:aws:iam::765812221756:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionRo-G2sedcM4aDN5"
+artifacts_bucket = "aws-sam-cli-managed-dev-pipeline-r-artifactsbucket-np05pulhredb"
+image_repository = ""
+region = "eu-west-1"
+
+[prod.pipeline_bootstrap.parameters]
+pipeline_execution_role = "arn:aws:iam::765812221756:role/aws-sam-cli-managed-prod-pipe-PipelineExecutionRole-cpwQDNdolMr9"
+cloudformation_execution_role = "arn:aws:iam::765812221756:role/aws-sam-cli-managed-prod--CloudFormationExecutionRo-L4Nk0eCioGS8"
+artifacts_bucket = "aws-sam-cli-managed-prod-pipeline--artifactsbucket-1k6bdu1obdsy"
+image_repository = ""
+region = "eu-west-1"

@@ -1,0 +1,9 @@
+# SAM build output, but keep the pipeline config written by `sam pipeline bootstrap`
+.aws-sam/*
+!.aws-sam/pipeline/
+packaged-*.yaml
+
+.idea/
+.vscode/
+.DS_Store
+.claude/
