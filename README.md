@@ -39,7 +39,7 @@ Each runs `sam validate --lint`, then `sam build`, then `sam package`, then
 
 Authentication uses GitHub OIDC, so no long-lived AWS keys are stored.
 Each pipeline execution role's trust policy accepts only one branch:
-`refs/heads/develop` for dev and `refs/heads/main` for prod. The dev workflow
+`refs/heads/develop` for dev and `refs/heads/main` for prod, of this repository only. The dev workflow
 therefore cannot assume prod credentials. The jobs must not set a GitHub
 `environment:`, because that changes the OIDC subject claim and the role
 would reject it.
@@ -50,16 +50,23 @@ would reject it.
 sam pipeline bootstrap --no-interactive --stage dev --region eu-west-1 \
   --cicd-provider github-actions --permissions-provider oidc --oidc-provider github-actions \
   --oidc-provider-url https://token.actions.githubusercontent.com --oidc-client-id sts.amazonaws.com \
-  --github-org muhumuza-ivan --github-repo dynamodb-sam --deployment-branch develop \
+  --github-org "muhumuza-ivan@211486075" --github-repo "dynamodb-sam@1398622736" --deployment-branch develop \
   --no-create-image-repository --no-confirm-changeset
 # repeat with --stage prod --deployment-branch main
 sam pipeline init   # AWS Quick Start > GitHub Actions > stages dev, prod
 ```
 
+The repo uses GitHub's immutable OIDC subject format
+(`repo:<owner>@<owner-id>/<repo>@<repo-id>:ref:refs/heads/<branch>`, see
+`gh api repos/muhumuza-ivan/dynamodb-sam/actions/oidc/customization/sub`),
+so the org and repo are passed with their numeric IDs. SAM then writes a trust
+condition that matches that format.
+
 SAM CLI 1.166 has two bugs that affect this:
 - `--cicd-provider github-actions` is required, otherwise `--oidc-provider` is ignored.
 - Values saved under `[default]` in `pipelineconfig.toml` override CLI flags. Make sure no
-  `deployment_branch` is saved there before bootstrapping another stage.
+  `github_org`, `github_repo` or `deployment_branch` is saved there before
+  bootstrapping another stage.
 
 ## Verification
 
