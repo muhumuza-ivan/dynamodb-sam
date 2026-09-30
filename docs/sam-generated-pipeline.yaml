@@ -12,18 +12,18 @@ on:
 env:
   SAM_TEMPLATE: template.yaml
   TESTING_STACK_NAME: dynamodb-sam-dev
-  TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/aws-sam-cli-managed-dev-pipel-PipelineExecutionRole-3Iee5dBYq6QC
-  TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionRo-G2sedcM4aDN5
-  TESTING_ARTIFACTS_BUCKET: aws-sam-cli-managed-dev-pipeline-r-artifactsbucket-np05pulhredb
+  TESTING_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-dev-pipeline-exec-role
+  TESTING_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-dev-cfn-exec-role
+  TESTING_ARTIFACTS_BUCKET: dynamodb-sam-artifacts-dev-765812221756-eu-west-1
   # If there are functions with "Image" PackageType in your template,
   # uncomment the line below and add "--image-repository ${TESTING_IMAGE_REPOSITORY}" to
   # testing "sam package" and "sam deploy" commands.
   # TESTING_IMAGE_REPOSITORY = '0123456789.dkr.ecr.region.amazonaws.com/repository-name'
   TESTING_REGION: eu-west-1
   PROD_STACK_NAME: dynamodb-sam-prod
-  PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/aws-sam-cli-managed-prod-pipe-PipelineExecutionRole-cpwQDNdolMr9
-  PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/aws-sam-cli-managed-prod--CloudFormationExecutionRo-L4Nk0eCioGS8
-  PROD_ARTIFACTS_BUCKET: aws-sam-cli-managed-prod-pipeline--artifactsbucket-1k6bdu1obdsy
+  PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-prod-pipeline-exec-role
+  PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-prod-cfn-exec-role
+  PROD_ARTIFACTS_BUCKET: dynamodb-sam-artifacts-prod-765812221756-eu-west-1
   # If there are functions with "Image" PackageType in your template,
   # uncomment the line below and add "--image-repository ${PROD_IMAGE_REPOSITORY}" to
   # prod "sam package" and "sam deploy" commands.
