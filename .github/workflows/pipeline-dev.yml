@@ -2,6 +2,7 @@
 # (original kept at docs/sam-generated-pipeline.yaml). Deploys ONLY the dev stack,
 # using ONLY the dev resources (stack dynamodb-sam-pipeline-dev) created by the
 # dynamodb-sam-bootstrap repo and registered in .aws-sam/pipeline/pipelineconfig.toml.
+# Role ARNs and the artifact bucket are read from repository secrets (see README).
 #
 # The dev pipeline execution role trusts only
 #   repo:muhumuza-ivan@211486075/dynamodb-sam@1398622736:ref:refs/heads/develop
@@ -30,9 +31,9 @@ env:
   SAM_TEMPLATE: template.yaml
   STAGE: dev
   DEV_STACK_NAME: dynamodb-sam-dev
-  DEV_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-dev-pipeline-exec-role
-  DEV_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-dev-cfn-exec-role
-  DEV_ARTIFACTS_BUCKET: dynamodb-sam-artifacts-dev-765812221756-eu-west-1
+  DEV_PIPELINE_EXECUTION_ROLE: ${{ secrets.DEV_PIPELINE_EXECUTION_ROLE }}
+  DEV_CLOUDFORMATION_EXECUTION_ROLE: ${{ secrets.DEV_CLOUDFORMATION_EXECUTION_ROLE }}
+  DEV_ARTIFACTS_BUCKET: ${{ secrets.DEV_ARTIFACTS_BUCKET }}
   DEV_REGION: eu-west-1
 
 jobs:

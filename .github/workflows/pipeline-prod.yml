@@ -2,6 +2,7 @@
 # (original kept at docs/sam-generated-pipeline.yaml). Deploys ONLY the prod stack,
 # using ONLY the prod resources (stack dynamodb-sam-pipeline-prod) created by the
 # dynamodb-sam-bootstrap repo and registered in .aws-sam/pipeline/pipelineconfig.toml.
+# Role ARNs and the artifact bucket are read from repository secrets (see README).
 #
 # The prod pipeline execution role trusts only
 #   repo:muhumuza-ivan@211486075/dynamodb-sam@1398622736:ref:refs/heads/main
@@ -30,9 +31,9 @@ env:
   SAM_TEMPLATE: template.yaml
   STAGE: prod
   PROD_STACK_NAME: dynamodb-sam-prod
-  PROD_PIPELINE_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-prod-pipeline-exec-role
-  PROD_CLOUDFORMATION_EXECUTION_ROLE: arn:aws:iam::765812221756:role/dynamodb-sam-prod-cfn-exec-role
-  PROD_ARTIFACTS_BUCKET: dynamodb-sam-artifacts-prod-765812221756-eu-west-1
+  PROD_PIPELINE_EXECUTION_ROLE: ${{ secrets.PROD_PIPELINE_EXECUTION_ROLE }}
+  PROD_CLOUDFORMATION_EXECUTION_ROLE: ${{ secrets.PROD_CLOUDFORMATION_EXECUTION_ROLE }}
+  PROD_ARTIFACTS_BUCKET: ${{ secrets.PROD_ARTIFACTS_BUCKET }}
   PROD_REGION: eu-west-1
 
 jobs:
